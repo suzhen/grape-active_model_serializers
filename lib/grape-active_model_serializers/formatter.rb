@@ -15,7 +15,10 @@ module Grape
         def fetch_serializer(resource, env)
           endpoint = env['api.endpoint']
           options = build_options_from_endpoint(endpoint)
-
+          #suzhen add this code
+          if resource.respond_to?(:to_ary)
+            options.merge!(:meta=>{result: true,count: resource.count})
+          end
           if resource.respond_to?(:to_ary) && !resource.empty?
             # ensure we have an root to fallback on
             endpoint.controller_name = default_root(endpoint)
